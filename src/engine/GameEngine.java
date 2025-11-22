@@ -132,6 +132,14 @@ private void processarRodadaDoJogador(Startup startup) {
 
 }
 
+// serve para o processarRodadaDoJogador não dar erro. 
+//ele chama o método fecharRodada(startup) sendo q o método ainda n existe.
+private void fecharRodada(Startup startup) {
+    // TODO: lógica de fechar rodada (receita, crescimento, etc.)
+}
+
+
+
 
 
 //  Método escolherDecisoes: permite ao jogador escolher até N decisões em uma rodada
