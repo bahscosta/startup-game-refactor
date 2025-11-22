@@ -78,7 +78,6 @@ public void iniciarSimulacaoStartup() {
 
 
 
-
 //método para criar as startups iniciais:
 private List<Startup> criarStartups() {
     List <Startup> list = new ArrayList<> ();
@@ -107,11 +106,30 @@ private List<Startup> criarStartups() {
     return list;
 }
     
-//vai processar todas as ações de uma startup na rodada
+
+
+
+//método que vai processar todas as ações de uma startup na rodada
 private void processarRodadaDoJogador(Startup startup) {
     System.out.println("\n[ Startup: " + startup.getNome() + " ]");
+    System.out.println("Status antes da rodada:");
     System.out.println(startup);
     System.out.println("---------------------------------");
+
+    //escolher as decisões:
+    List<String> escolhas = escolherDecisoesRodada();
+
+    //aplicar essas decisões:
+    aplicarDecisoes(startup, escolhas);
+
+    //fechar a rodada:
+    fecharRodada(startup);
+
+
+    System.out.println("Status ao final da rodada:");
+    System.out.println(startup);
+
+
 }
 
 
@@ -171,6 +189,67 @@ private List<String> escolherDecisoes() {
     return escolhidas;
 }
 
+
+
+
+//agora é usar o método aplicarDecisoes
+//a partir da startup e das decisões escolhidas, vai pedir pro DecisaoFactory criar a estratégia
+//chama o strategy.aplicar(startup) pra devolver um Delta e depoois o aplica na startup
+// Aplica as decisões escolhidas na startup usando Strategy + Factory
+private void aplicarDecisoes(Startup startup, List<String> escolhas) {
+
+    if (escolhas == null || escolhas.isEmpty()) {
+        System.out.println("Nesta rodada, nenhuma decisão foi tomada!");
+        return;
+    }
+
+
+    for (String tipo : escolhas) {
+        System.out.println("\nAplicando decisão: " + tipo);
+
+        // cria a estratégia de acordo com o tipo da decisão:
+        DecisaoStrategy strategy = DecisaoFactory.criar(tipo);
+
+        if (strategy == null) {
+            System.out.println("Não foi encontrada estratégia para o tipo: " + tipo);
+            continue; // pula para a próxima decisão
+        }
+
+
+
+        try {
+            // aplica a estratégia e recebe os deltas (alterações) que ela gera
+            Deltas d = strategy.aplicar(startup);
+
+        
+            // --- aplica os deltas na startup ---
+
+            // caixa
+            double novoCaixa = startup.getCaixa().valor() + d.caixaDelta();
+            startup.setCaixa(new model.vo.Dinheiro(novoCaixa));
+
+            // reputação
+            int novaReputacao = startup.getReputacao().valor() + d.reputacaoDelta();
+            startup.setReputacao(new model.vo.Humor(novaReputacao));
+
+            // moral
+            int novaMoral = startup.getMoral().valor() + d.moralDelta();
+            startup.setMoral(new model.vo.Humor(novaMoral));
+
+            // bônus de receita para a próxima rodada (Percentual)
+            startup.addBonusPercentReceitaProx(d.bonusDelta());
+
+            System.out.println("Decisão aplicada com sucesso.");
+
+
+
+        
+        } catch (Exception e) {
+            // tratamento de exceção obrigatório (prof pediu)
+            System.out.println("Erro ao aplicar a decisão '" + tipo + "': " + e.getMessage());
+        }
+    }
+}
 
 
 }
