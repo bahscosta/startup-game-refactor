@@ -117,7 +117,7 @@ private void processarRodadaDoJogador(Startup startup) {
     System.out.println("---------------------------------");
 
     //escolher as decisões:
-    List<String> escolhas = escolherDecisoesRodada();
+    List<String> escolhas = escolherDecisoes();
 
     //aplicar essas decisões:
     aplicarDecisoes(startup, escolhas);
@@ -132,10 +132,26 @@ private void processarRodadaDoJogador(Startup startup) {
 
 }
 
+
+
 // serve para o processarRodadaDoJogador não dar erro. 
 //ele chama o método fecharRodada(startup) sendo q o método ainda n existe.
 private void fecharRodada(Startup startup) {
-    // TODO: lógica de fechar rodada (receita, crescimento, etc.)
+    // calcula a receita da rodada (incluindo o bônus)
+    double receita = startup.receitaRodada();
+
+    // adiciona a receita ao caixa
+    double novoCaixa = startup.getCaixa().valor() + receita;
+    startup.setCaixa(new model.vo.Dinheiro(novoCaixa));
+
+    // calcula crescimento da receita base
+    double crescimento =
+        1.0
+        + (startup.getReputacao().valor() / 100.0) * 0.01
+        + (startup.getMoral().valor() / 100.0) * 0.005;
+
+    double novaBase = startup.getReceitaBase().valor() * crescimento;
+    startup.setReceitaBase(new model.vo.Dinheiro(novaBase));
 }
 
 
