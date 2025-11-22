@@ -42,13 +42,13 @@ public class GameEngine {
 
 //Início do Jogo- Método IniciarSimulacaoStartup:
 public void iniciarSimulacaoStartup() {
-    System.out.println ("**Bem-vindo ao Startup Game!!**");
+    System.out.println ("**Bem-vindo ao Startup Game!**");
 
     System.out.println("Vamos simular o crescimento das startups ao longo de " 
-                       + config.totalRodadas() + " rodadas.");
+                       + config.totalRodadas() + " rodadas");
     System.out.println("Máximo de decisões por rodada: " 
                        + config.maxDecisoesPorRodada());
-    System.out.println("---------------------------------\n");
+    System.out.println("--------------------------------------------\n");
     
     //cria a startup
     startups = criarStartups();
@@ -57,7 +57,7 @@ public void iniciarSimulacaoStartup() {
     //Loop das rodadas:
     for (int rodada = 1; rodada <= config.totalRodadas(); rodada++) {
         System.out.println("\n INICIANDO RODADA " + rodada);
-        System.out.println("-------------------------------------");
+        System.out.println("-----------------------------------------");
         
             
         for (Startup startup : startups) {
