@@ -1,10 +1,4 @@
-//MEXER NESSE CÓDIGO DEPOIS!!
-
 //esse é p coração do jogo
-//criando a estrutura básica
-
-
-
 
 
 //essa classe está no pacote engine
@@ -15,6 +9,7 @@ import java.util.Scanner;
 //listar as startups e tomada de decisões:
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import model.Startup;
 import model.Deltas;
@@ -40,10 +35,15 @@ public class GameEngine {
 
 
 
-
-//Início do Jogo- Método IniciarSimulacaoStartup:
+//Método IniciarSimulacaoStartup - Início do Jogo
 public void iniciarSimulacaoStartup() {
-    System.out.println ("**Bem-vindo ao Startup Game!**");
+    System.out.println("\n╔══════════════════════════════════════╗");
+    System.out.println("  ║  🚀  BEM-VINDO AO STARTUP GAME  🚀  ║");
+    System.out.println("  ╚══════════════════════════════════════╝\n");
+
+
+
+
 
     System.out.println("Vamos simular o crescimento das startups ao longo de " 
                        + config.totalRodadas() + " rodadas");
@@ -51,10 +51,15 @@ public void iniciarSimulacaoStartup() {
                        + config.maxDecisoesPorRodada());
     System.out.println("--------------------------------------------\n");
     
-    //cria a startup
+
+
+
+
+    //cria a startup:
     startups = criarStartups();
     
     
+
     //Loop das rodadas:
     for (int rodada = 1; rodada <= config.totalRodadas(); rodada++) {
         System.out.println("\n INICIANDO RODADA " + rodada);
@@ -65,18 +70,22 @@ public void iniciarSimulacaoStartup() {
             startup.setRodadaAtual(rodada);
             processarRodadaDoJogador(startup);
         }
+
+
+
     }
     
+
+
     //mostrar os resultados - encerramento:
-    System.out.println("**FIM DO JOGO**");
+    System.out.println("\n**FIM DO JOGO**");
     for (Startup startup : startups) {
         System.out.println(startup.getNome() + " -> SCORE: " + startup.scoreFinal());
-    }
-} //esse código cria as startups, faz o loop de cada rodada e no final mostra o score de cada uma
+    } 
 
-
-
-
+    // depois, mostra o ranking final:
+    mostrarRankingFinal();
+}
 
 
 //método para criar as startups iniciais:
@@ -85,10 +94,10 @@ private List<Startup> criarStartups() {
 
     list.add(
         new Startup (
-            "StartupUm",
+            "AlphaLabs",
             new model.vo.Dinheiro(10000),  
-            new model.vo.Dinheiro (10000),
-            new model.vo.Humor (80),
+            new model.vo.Dinheiro (700),
+            new model.vo.Humor (60),
             new model.vo.Humor (80)
 
         )
@@ -96,11 +105,11 @@ private List<Startup> criarStartups() {
 
     list.add(
         new Startup(
-            "BioNova",
-            new model.vo.Dinheiro(100000),
+            "BetaTech",
+            new model.vo.Dinheiro(10000),
             new model.vo.Dinheiro(7000),
             new model.vo.Humor(60),
-            new model.vo.Humor(60)
+            new model.vo.Humor(80)
 
         )
     );
@@ -156,64 +165,117 @@ private void fecharRodada(Startup startup) {
 }
 
 
+//mostrar o ranking com base no Score:
+private void mostrarRankingFinal() {
+    System.out.println("\n****RANKING FINAL****");
+
+    // cria uma cópia da lista para ordenar
+    List<Startup> ordenada = new ArrayList<>(startups);
+
+    // ordena do MAIOR score para o menor:
+    ordenada.sort((s1, s2) -> Double.compare(s2.scoreFinal(), s1.scoreFinal()));
+
+    int pos = 1;
+    for (Startup s : ordenada) {
+        System.out.println(
+            pos + "º lugar - " + s.getNome() +
+            " | SCORE: " + String.format(Locale.US, "%.2f", s.scoreFinal())
+        );
+        pos++;
+    }
+}
+
+
+
+
+
+
+
+
 
 
 
 //  Método escolherDecisoes: permite ao jogador escolher até N decisões em uma rodada
 private List<String> escolherDecisoes() {
 
-    // lista de decisões:
-    List<String> opcoes = new ArrayList<>();
-    opcoes.add("MARKETING");
-    opcoes.add("PRODUTO");
-    opcoes.add("EQUIPE");
-    opcoes.add("INVESTIDORES");
-    opcoes.add("CORTAR_CUSTOS");
+    // lista de decisões: ( para o Strategy/Factory)
+    List<String> codigos = new ArrayList<>();
+    codigos.add("MARKETING");
+    codigos.add("PRODUTO");
+    codigos.add("EQUIPE");
+    codigos.add("INVESTIDORES");
+    codigos.add("CORTAR_CUSTOS");
 
 
     // lista para guardar as decisões escolhidas:
+    List<String> descricoes = new ArrayList<>();
+    descricoes.add("Investir em divulgação, aumenta reputação, mas custa dinheiro.");
+    descricoes.add("Melhorar o produto, aumenta chance de receita futura.");
+    descricoes.add("Cuidar da equipe, melhora moral e clima interno.");
+    descricoes.add("Buscar investidores, pode trazer dinheiro ou frustração.");
+    descricoes.add("Cortar custos, melhora caixa mas pode afetar moral.");
+
+
+
     List<String> escolhidas = new ArrayList<>();
 
     int maxDecisoes = config.maxDecisoesPorRodada();
 
     for (int i = 0; i < maxDecisoes; i++) {
 
+        System.out.println();
         System.out.println("\nEscolha uma decisão (" + (maxDecisoes - i) + " restante(s)):");
-        System.out.println("Opções disponíveis:");
-        for (String op : opcoes) {
-            System.out.println(" - " + op);
+        System.out.println("\n***Opções disponíveis: ***");
+
+
+        for (int idx = 0; idx < codigos.size(); idx++) {
+            System.out.println(" [" + (idx + 1) + "] " + codigos.get(idx) + " - " + descricoes.get(idx));
         }
-        System.out.print("Digite a decisão ou apenas Enter para parar: ");
+        System.out.println(" [0] Encerrar escolhas desta rodada");
 
-        String entrada = scanner.nextLine().trim().toUpperCase();
+        System.out.print("Digite o número da decisão ou 0/Enter para parar: ");
 
-        // sair se o usuário não quiser escolher mais nada
+        String entrada = scanner.nextLine().trim();
+
+        // Enter vazio = parar
         if (entrada.isEmpty()) {
             break;
         }
 
-        // decisão não existe
-        if (!opcoes.contains(entrada)) {
-            System.out.println("Decisão inválida. Tente novamente.");
+        int opcao;
+        try {
+            opcao = Integer.parseInt(entrada);
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada inválida. Digite apenas o número da opção.");
             i--; // não conta essa tentativa
             continue;
         }
 
-        // decisão repetida
-        if (escolhidas.contains(entrada)) {
-            System.out.println("Você já escolheu essa decisão.");
+        if (opcao == 0) {
+            // jogador decidiu não escolher mais nada
+            break;
+        }
+
+        if (opcao < 1 || opcao > codigos.size()) {
+            System.out.println("Opção inexistente. Tente novamente.");
             i--; // não conta essa tentativa
             continue;
         }
 
-        // decisão válida
-        escolhidas.add(entrada);
-        System.out.println("Decisão '" + entrada + "' adicionada.");
+        String codigoEscolhido = codigos.get(opcao - 1);
+
+        if (escolhidas.contains(codigoEscolhido)) {
+            System.out.println("Você já escolheu essa decisão nessa rodada.");
+            i--; // não conta essa tentativa
+            continue;
+        }
+
+        escolhidas.add(codigoEscolhido);
+        System.out.println("Decisão '" + codigoEscolhido + "' adicionada.");
     }
 
     return escolhidas;
 }
-
 
 
 
