@@ -18,7 +18,7 @@ public class CSVObserver implements ObserverStartup {
     }
 
     @Override
-    public void onEvent(String evento, Startup s) {
+    public void onEvento(String evento, Startup s) {
 
         // só queremos registrar quando o jogo termina
         if (!"jogo_finalizado".equals(evento)) {
