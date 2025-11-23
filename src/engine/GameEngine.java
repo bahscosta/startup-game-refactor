@@ -58,6 +58,9 @@ public void iniciarSimulacaoStartup() {
     //cria a startup:
     startups = criarStartups();
     
+
+
+    
     
 
     //Loop das rodadas:
@@ -68,7 +71,14 @@ public void iniciarSimulacaoStartup() {
             
         for (Startup startup : startups) {
             startup.setRodadaAtual(rodada);
+            
+            //Observer: início da rodada
+            startup.notifyObservers("rodada_inicio", startup);
+
             processarRodadaDoJogador(startup);
+
+            //Observer: fim da rodada
+            startup.notifyObservers("rodada_fim", startup);
         }
 
 
@@ -83,6 +93,14 @@ public void iniciarSimulacaoStartup() {
         System.out.println(startup.getNome() + " -> SCORE: " + startup.scoreFinal());
     } 
 
+    //Observer: jogo finalizado
+    for (Startup s : startups) {
+        s.notifyObservers("jogo_finalizado", s);
+    }
+
+
+
+
     // depois, mostra o ranking final:
     mostrarRankingFinal();
 }
@@ -92,27 +110,28 @@ public void iniciarSimulacaoStartup() {
 private List<Startup> criarStartups() {
     List <Startup> list = new ArrayList<> ();
 
-    list.add(
-        new Startup (
-            "AlphaLabs",
-            new model.vo.Dinheiro(10000),  
-            new model.vo.Dinheiro (700),
-            new model.vo.Humor (60),
-            new model.vo.Humor (80)
-
-        )
+    Startup s1 = new Startup(
+        "AlphaLabs",
+        new model.vo.Dinheiro(10000),
+        new model.vo.Dinheiro(700),
+        new model.vo.Humor(60),
+        new model.vo.Humor(80)
     );
+    s1.addObserver(new observer.ConsoleObserver());
+    s1.addObserver(new observer.CSVObserver());
+    list.add(s1);
 
-    list.add(
-        new Startup(
-            "BetaTech",
-            new model.vo.Dinheiro(10000),
-            new model.vo.Dinheiro(7000),
-            new model.vo.Humor(60),
-            new model.vo.Humor(80)
-
-        )
+    Startup s2 = new Startup(
+        "BetaTech",
+        new model.vo.Dinheiro(10000),
+        new model.vo.Dinheiro(7000),
+        new model.vo.Humor(60),
+        new model.vo.Humor(80)
     );
+    s2.addObserver(new observer.ConsoleObserver());
+    s2.addObserver(new observer.CSVObserver());
+    list.add(s2);
+
     return list;
 }
     
@@ -307,6 +326,11 @@ private void aplicarDecisoes(Startup startup, List<String> escolhas) {
         try {
             // aplica a estratégia e recebe os deltas (alterações) que ela gera
             Deltas d = strategy.aplicar(startup);
+
+
+            //Observer: decisão aplicada
+            startup.notifyObservers("decisao_" + tipo, startup);
+
 
         
             // --- aplica os deltas na startup ---

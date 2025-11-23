@@ -3,6 +3,8 @@ package model;
 import model.vo.Dinheiro;
 import model.vo.Humor;
 import model.vo.Percentual;
+import observer.ObserverStartup;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +21,11 @@ public class Startup {
     private Percentual bonusPercentReceitaProx = new Percentual(0.0);
 
     private final List<String> historico = new ArrayList<>();
+
+
+    private final List<ObserverStartup> observers = new ArrayList<>();
+
+
 
     public Startup(String nome, Dinheiro caixa, Dinheiro receitaBase, Humor reputacao, Humor moral) {
         this.nome = nome;
@@ -77,6 +84,17 @@ public class Startup {
     }
 
     public List<String> getHistorico() { return historico; }
+
+    public void addObserver(ObserverStartup obs) {
+        observers.add(obs);
+    }
+
+    public void notifyObservers(String evento, Startup s) {
+        for (ObserverStartup obs : observers) {
+            obs.onEvent(evento, s);
+        }
+    }
+
 
     @Override
     public String toString() {
