@@ -58,11 +58,7 @@ public void iniciarSimulacaoStartup() {
     //cria a startup:
     startups = criarStartups();
     
-
-
     
-    
-
     //Loop das rodadas:
     for (int rodada = 1; rodada <= config.totalRodadas(); rodada++) {
         System.out.println("\n INICIANDO RODADA " + rodada);
@@ -72,13 +68,12 @@ public void iniciarSimulacaoStartup() {
         for (Startup startup : startups) {
             startup.setRodadaAtual(rodada);
             
-            //Observer: início da rodada
-            startup.notifyObservers("rodada_inicio", startup);
+            startup.notifyObservers("rodada_inicio");
 
             processarRodadaDoJogador(startup);
 
-            //Observer: fim da rodada
-            startup.notifyObservers("rodada_fim", startup);
+            startup.notifyObservers("rodada_fim");
+
         }
 
 
@@ -95,7 +90,7 @@ public void iniciarSimulacaoStartup() {
 
     //Observer: jogo finalizado
     for (Startup s : startups) {
-        s.notifyObservers("jogo_finalizado", s);
+        s.notifyObservers("jogo_finalizado");
     }
 
 
@@ -329,7 +324,7 @@ private void aplicarDecisoes(Startup startup, List<String> escolhas) {
 
 
             //Observer: decisão aplicada
-            startup.notifyObservers("decisao_" + tipo, startup);
+            startup.notifyObservers("decisao_" + tipo);
 
 
         
