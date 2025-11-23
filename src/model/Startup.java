@@ -26,6 +26,9 @@ public class Startup {
         this.receitaBase = receitaBase;
         this.reputacao = reputacao;
         this.moral = moral;
+
+
+
     }
 
     public void registrar(String linha) { 
