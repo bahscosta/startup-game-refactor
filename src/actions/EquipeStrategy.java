@@ -8,7 +8,7 @@ import model.Startup;
 
 public class EquipeStrategy implements DecisaoStrategy {
     @Override
-    public Deltas aplicar(Startup s) {
+    public Deltas aplicar(Startup startup) {
         return new Deltas(-5_000, 0, +7, 0.0);
     }
 }

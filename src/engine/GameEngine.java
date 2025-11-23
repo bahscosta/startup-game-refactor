@@ -32,6 +32,7 @@ public class GameEngine {
 
 
     //essa classe guarda o Config pra saber a qtd de rodadas e qtd de decisões
+    //é o construtor
     public GameEngine(Config config) {
         this.config = config;
 }
@@ -277,3 +278,18 @@ private void aplicarDecisoes(Startup startup, List<String> escolhas) {
 
 
 }
+
+
+/*cria startups iniciais 
+
+roda as rodadas 
+
+pergunta decisões 
+
+usa Strategy + Factory 
+
+aplica Deltas na Startup 
+
+fecha a rodada calculando receita e crescimento 
+
+mostra score final */

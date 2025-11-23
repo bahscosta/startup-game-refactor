@@ -8,7 +8,7 @@ import model.Startup;
 
 public class InvestidoresStrategy implements DecisaoStrategy {
     @Override
-    public Deltas aplicar(Startup s) {
+    public Deltas aplicar(Startup startup) {
         boolean aprovado = Math.random() < 0.60;
 
         if (aprovado) {

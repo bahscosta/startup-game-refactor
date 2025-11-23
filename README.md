@@ -187,3 +187,19 @@ o Repositório se encontra neste link: https://github.com/bahscosta/startup-game
 
 Atualização 21/11: README inicial criado com base nas implementações já concluídas.
 
+
+
+
+# Como fucniona a rodada:
+
+Mostrar como a startup está no começo da rodada
+
+Perguntar ao jogador quais decisões ele quer tomar
+
+Aplicar essas decisões (usando Strategy e Factory)
+
+Fechar a rodada (receber receita, atualizar moral, reputação etc.)
+
+Mostrar como a startup ficou depois
+
+ Tudo isso acontece para CADA startup em CADA rodada.

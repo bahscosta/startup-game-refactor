@@ -12,7 +12,7 @@ import model.Startup;
 
 public class MarketingStrategy implements DecisaoStrategy {
     @Override
-    public Deltas aplicar(Startup s) {
+    public Deltas aplicar(Startup startup) {
         return new Deltas(-10_000, +5, 0, 0.03);
     }
 }
