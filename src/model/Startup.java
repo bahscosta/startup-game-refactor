@@ -85,15 +85,21 @@ public class Startup {
 
     public List<String> getHistorico() { return historico; }
 
+
+
     public void addObserver(ObserverStartup obs) {
         observers.add(obs);
     }
 
-    public void notifyObservers(String evento, Startup s) {
+    public void notifyObservers(String evento) {
         for (ObserverStartup obs : observers) {
-            obs.onEvent(evento, s);
+            obs.onEvento(evento, this);
         }
     }
+
+
+
+
 
 
     @Override

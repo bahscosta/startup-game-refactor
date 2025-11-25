@@ -8,8 +8,7 @@ import model.Startup;
 public class ConsoleObserver implements ObserverStartup {
 
     @Override
-    public void onEvent(String evento, Startup s) {
-
+    public void onEvento(String evento, Startup s) {
         System.out.println(
             "\n[EVENTO] " + evento.toUpperCase() +
             " | Startup: " + s.getNome() +
