@@ -8,8 +8,8 @@ RA: 10438935
 Ana Clara 
 RA:
 
-Nicole
-RA:
+Nicole Sofia Silva Beira
+RA: 10403742
 
  # SUMÁRIO:
 
