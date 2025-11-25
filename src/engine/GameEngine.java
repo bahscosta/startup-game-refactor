@@ -140,21 +140,29 @@ private void processarRodadaDoJogador(Startup startup) {
     System.out.println(startup);
     System.out.println("---------------------------------");
 
-    //escolher as decisões:
-    List<String> escolhas = escolherDecisoes();
+    // escolher as decisões:
+    List<String> escolhas;
 
-    //aplicar essas decisões:
+    // Se for a BetaTech, quem decide é o bot:
+    if ("BetaTech".equals(startup.getNome())) {
+        BotDecision bot = new BotDecision();
+        escolhas = bot.escolherDecisoesBot(config.maxDecisoesPorRodada());
+        System.out.println("\n[Bot] Decisões escolhidas automaticamente: " + escolhas);
+    } else {
+        // se não for bot, o jogador escolhe normalmente
+        escolhas = escolherDecisoes();
+    }
+
+    // aplicar essas decisões:
     aplicarDecisoes(startup, escolhas);
 
-    //fechar a rodada:
+    // fechar a rodada:
     fecharRodada(startup);
-
 
     System.out.println("Status ao final da rodada:");
     System.out.println(startup);
-
-
 }
+
 
 
 
