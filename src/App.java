@@ -1,5 +1,9 @@
 //é a porta de entrada do jogo
 
+DatabaseInitializer.inicializar();
+
+
+
 import config.Config;
 import engine.GameEngine;
 

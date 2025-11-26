@@ -1,6 +1,3 @@
-//é o meu BOT IA
-
-
 package engine;
 
 import java.util.ArrayList;
