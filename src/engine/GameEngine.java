@@ -37,9 +37,9 @@ public class GameEngine {
 
 //Método IniciarSimulacaoStartup - Início do Jogo
 public void iniciarSimulacaoStartup() {
-    System.out.println("\n╔══════════════════════════════════════╗");
-    System.out.println("  ║  🚀  BEM-VINDO AO STARTUP GAME  🚀  ║");
-    System.out.println("  ╚══════════════════════════════════════╝\n");
+    System.out.println("\n************************************************");
+    System.out.println("  *************BEM-VINDO AO STARTUP GAME ********** ");
+    System.out.println(" ************************************************\n");
 
 
 
