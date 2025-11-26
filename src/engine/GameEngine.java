@@ -1,6 +1,11 @@
 //esse é p coração do jogo
 
 
+//importei o repositório 
+import persistence.StartupRepository;
+
+
+
 //essa classe está no pacote engine
 package engine; 
 
@@ -86,6 +91,9 @@ public void iniciarSimulacaoStartup() {
     System.out.println("\n**FIM DO JOGO**");
     for (Startup startup : startups) {
         System.out.println(startup.getNome() + " -> SCORE: " + startup.scoreFinal());
+
+        // salva o estado final da startup no BD
+        StartupRepository.salvarEstadoFinal(startup);
     } 
 
     //Observer: jogo finalizado
@@ -93,12 +101,10 @@ public void iniciarSimulacaoStartup() {
         s.notifyObservers("jogo_finalizado");
     }
 
-
-
-
     // depois, mostra o ranking final:
     mostrarRankingFinal();
 }
+
 
 
 //método para criar as startups iniciais:
