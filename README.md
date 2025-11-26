@@ -5,27 +5,27 @@ Alunas:
 Bárbara Silva Costa 
 RA: 10438935
 
-Ana Clara 
-RA:
-
 Nicole Sofia Silva Beira
 RA: 10403742
 
  # SUMÁRIO:
 
 - Sobre o jogo
-– Estrutura criada
-– VOs feitos
-– Startup e Deltas feitos
-– Strategies implementadas
-– Config, ConsoleApp e Main prontos
-– Persistência / GameEngine ainda em desenvolvimento  
+- Versionamento: usando Git
+– Estrutura do projeto
+– Resumo da estrutura do projeto
+- Configurações do jogo
+- Principais componentes implementados
+- Como compilar e rodar este projeto:
+- Padrões de projeto usados
+- Banco de Dados
 
-# REFATORAÇÃO DO STARTUP GAME - Sobre o jogo:
+# Sobre o jogo - REFATORAÇÃO DO STARTUP GAME:
 
-Neste repositório há o projeto de refatoração do Startup Game: um jogo em console do qual cada jogador administra uma startup ao longo de 8 rodadas.
+Neste repositório há o projeto de refatoração do Startup Game: um jogo em console do qual duas startups passam 8 rodadas tomando decisões que afetam o desempenho delas.
 
-Em cada rodada, o jogador precisa tomar algumas decisões, como:
+
+As decisões estão listadas abaixo:
 
 - Marketing
 - Equipe
@@ -33,71 +33,93 @@ Em cada rodada, o jogador precisa tomar algumas decisões, como:
 - Investidores
 - Cortar Custos
 
-Essas decisões irão impactar em diferentes áreas, como: : Caixa, Receita Base, Reputação e Moral da startup!
+Elas irão impactar em diferentes áreas, como: : Caixa, Receita Base, Reputação e Moral da startup!
 
-O Objetivo do jogo é calcular, ao final das 8 rodadas, um score e, posteriormente, apresentar um ranking.
+
+O Objetivo do jogo é calcular, ao final das rodadas, um score e, posteriormente, apresentar um ranking.
 
 Já o objetivo deste projeto, como solicitado, é aplicar boas práticas de POO, por meio de padrões Strategy e uso de Value Objects.
+
+
+
+# Versionamento: usando Git:
+o Repositório se encontra neste link: https://github.com/bahscosta/startup-game-refactor
 
 
 # ESTRUTURA DO PROJETO:
 
 startup-game-refactor/
-  resources/
-    .gitkeep 
-    game.properties
-    schema.sql
+│
+├── .vscode/
+│    └── settings.json
+│
+├── resources/
+│    ├── .gitkeep
+│    └── schema.sql
+│
+├── src/
+│   ├── actions/
+│   │    ├── CortarCustosStrategy.java
+│   │    ├── DecisaoFactory.java
+│   │    ├── DecisaoStrategy.java
+│   │    ├── EquipeStrategy.java
+│   │    ├── InvestidoresStrategy.java
+│   │    ├── MarketingStrategy.java
+│   │    └── ProdutoStrategy.java
+│   │
+│   ├── config/
+│   │    └── Config.java
+│   │
+│   ├── engine/
+│   │    ├── BotDecision.java
+│   │    ├── GameEngine.java
+│   │    └── ScoreService.java   (seu serviço de score)
+│   │
+│   ├── model/
+│   │    ├── vo/
+│   │    │     ├── Dinheiro.java
+│   │    │     ├── Humor.java
+│   │    │     └── Percentual.java
+│   │    │
+│   │    ├── Deltas.java
+│   │    └── Startup.java
+│   │
+│   ├── observer/
+│   │    ├── ConsoleObserver.java
+│   │    ├── CSVObserver.java
+│   │    └── ObserverStartup.java
+│   │
+│   ├── persistence/
+│   │    ├── DataSourceProvider.java
+│   │    ├── DecisaoAplicadaRepository.java
+│   │    ├── RodadaRepository.java
+│   │    └── StartupRepository.java
+│   │
+│   └── ui/
+│        └── ConsoleApp.java
+│
+├── .gitkeep
+├── App.java
+├── Main.java
+├── game.properties
+├── README.md
+└── relatorio_startups.csv
 
-  src/
-    Main.java
-    .gitkeep
 
-    actions/
-      CortarCustos.java
-      DecisaoFactory.java
-      DecisaoStrategy.java
-      EquipeStrategy.java
-      InvestidoresStrategy.java
-      MarketingStrategy.java
-      ProdutoStrategy.java
+#Estrutura resumida do projeto:
+src/
+├── actions/ # Estratégias das decisões (Strategy + Factory)
+├── config/ # Configurações do jogo (game.properties)
+├── engine/ # GameEngine (coração do jogo) + IA Bot
+├── model/ # Startup, Deltas e Value Objects (Dinheiro, Humor…)
+├── observer/ # Observers (Console e CSV)
+├── persistence/ # Repositórios (opcional avançado)
+└── ui/ # Interface simples de console
 
-    config/
-      Config.java
-    
-    engine/
-      GameEngine.java
-      ScoreService.java
-
-    model/
-      Deltas.java
-      Startup.java
-      vo/
-        Dinheiro.java
-        Humor.java
-        Percentual.java
-        Deltas.java
-        Startup.java
-
-    persistente/
-      DataSourceProvider.java
-      DecisaoAplicadaRepository.java
-      RodadaRepository.java
-      StartupRepository.java
-
-    ui/
-      ConsoleApp.java
-    
-# VOs feitos:
-
-# Startup e Deltas feitos
-
-# Strategies implementadas
-
-
-# Config, ConsoleApp e Main prontos
-
-
-# Persistência / GameEngine ainda em desenvolvimento  
+//VOs feitos:
+// Startup e Deltas feitos
+//Strategies implementadas
+//Config, ConsoleApp e Main prontos
 
 
 # Configurações do jogo:
@@ -108,61 +130,258 @@ Esses valores serão lidos pela classe Config.
 
 # Principais componentes implementados:
 
-- Strategy:
-CortarCustos.java
-DecisaoFactory.java
-DecisaoStrategy.java
-EquipeStrategy.java
-InvestidoresStrategy.java
-MarketingStrategy.java
-ProdutoStrategy.java
+1 - GameEngine (engine/):
 
-Cada Strategy vai retornar um Deltas.
+O “motor do jogo”.
+Responsável por:
+
+iniciar a simulação
+
+controlar o fluxo das rodadas
+
+pedir decisões (jogador ou bot)
+
+aplicar estratégias
+
+atualizar atributos da startup
+
+calcular receita e score
+
+chamar observers
+
+exibir ranking final
+
+É o componente mais importante.
+
+2️- Startup (model/)
+
+Objeto principal do jogo.
+Cada startup tem:
+
+caixa (Dinheiro)
+
+receita base (Dinheiro)
+
+moral (Humor)
+
+reputação (Humor)
+
+bônus de receita
+
+lista de observers
+
+Guarda tudo que muda ao longo da simulação.
+
+3️- Value Objects (model/vo/)
+
+Representam valores com regra própria, usados para deixar o código mais organizado:
+
+Dinheiro
+
+Humor
+
+Percentual
+
+Eles garantem consistência e encapsulam regras (bom ponto de POO).
+
+4️- Deltas (model/)
+
+Classe que representa as mudanças que cada decisão gera:
+
+delta de caixa
+
+delta de moral
+
+delta de reputação
+
+delta de bônus
+
+Cada Strategy retorna um objeto Deltas.
+
+5️- Strategy + Factory (actions/)
+Strategy:
+
+Cada decisão do jogo é uma classe específica que implementa a interface:
+
+MarketingStrategy
+
+ProdutoStrategy
+
+EquipeStrategy
+
+InvestidoresStrategy
+
+CortarCustosStrategy
+
+Cada uma tem sua lógica de negócio.
+
+ Factory:
+
+DecisaoFactory cria a estratégia certa de acordo com o código selecionado.
+
+Esse conjunto mostra entendimento sólido de:
+
+polimorfismo
+
+responsabilidade única
+
+desacoplamento
+
+extensibilidade
+
+6️- Observer Pattern (observer/)
+
+Você implementou dois observers reais:
+
+ConsoleObserver
+
+CSVObserver
+
+Eles recebem eventos como:
+
+início da rodada
+
+decisão aplicada
+
+fim da rodada
+
+fim do jogo
+
+Isso adiciona reatividade ao sistema, sem acoplamento.
+
+7️- Bot de IA simples (engine/BotDecision.java)
+
+Componente opcional, que permite:
+
+decisões automáticas para a BetaTech
+
+escolhas aleatórias, sem repetição
+
+funcionamento independente do jogador
+
+Demonstra:
+
+uso de lógica adicional
+
+extensão do jogo
+
+cumprimento de um dos opcionais do professor
+
+8️- Persistência inicial (persistence/)
+
+Você criou repositórios com interfaces reais:
+
+DataSourceProvider
+
+RodadaRepository
+
+StartupRepository
+
+etc.
+
+Mesmo não sendo totalmente utilizados, mostram estrutura de software profissional.
+
+9️- Config (config/Config.java)
+
+Leitura automática do arquivo game.properties:
+
+total de rodadas
+
+quantidade de decisões por rodada
+
+Separar configuração em arquivo externo é muito certo e demonstra maturidade.
+
+10- Interface de Usuário (ui/ConsoleApp.java / App.java)
+
+A interface simples que:
+
+dá boas-vindas
+
+inicia o jogo
+
+imprime mensagens
+
+encerra o jogo
+
+E o App.java funciona como ponto de entrada oficial.
 
 
-- Value Objects (VO):
-model.vo.Dinheiro.java
-model.vo.Humor.java
-model.vo.Percentual.java
+
+>>>>RESUMO DOS PRINCIPAIS COMPONENTES
+
+GameEngine → controla toda a lógica do jogo
+
+Startup → representa o estado de cada empresa
+
+Strategy + Factory → decisões do jogo desacopladas
+
+Deltas → mudanças aplicadas a cada rodada
+
+Value Objects → Dinheiro, Humor, Percentual
+
+Observer Pattern → console e CSV registrando eventos
+
+Bot IA → decisões automáticas para uma startup
+
+Config → leitura de arquivo de configurações
+
+Persistência (estrutura inicial)
+
+Interface Console → entrada e saída do usuário
 
 
-- Modelo da Startup:
-model.Startup.java
-model.Deltas.java
 
--Interface do Console:
-ui.ConsoleApp
+# Como compilar e rodar este projeto:
+Rodar direto pela classe App.java:
+Insira:
+javac App.java
 
-A classe Main serve exclusivamente para delegar o ConsoleApp.
-
+depois: java App
 
 
+ou:
+startup-game-refactor/
+e insira: javac -d out (Get-ChildItem -Recurse -Filter *.java | ForEach-Object { $_.FullName })
+
+e depois: java -cp "out;resources" Main
 
 
 
+# Padrões de Projeto usados:
 
+--> Strategy:
 
+Cada “decisão” do jogo é uma estratégia diferente.
+Assim, para novas decisões, basta criar novas classes sem mexer na GameEngine.
 
-Obs:
-As classes abaixo já existem, mas ainda estão em desenvolvimento:
+--> Observer (Opcional entregue)
 
-engine.GameEngine
+Implementei dois observers:
 
-engine.ScoreService
+ConsoleObserver → mostra eventos no terminal
 
-A responsabilidade da GameEngine será:
+CSVObserver → gera um arquivo .csv com as mudanças das startups
 
-controlar o loop de rodadas
+Eventos observados:
 
-aplicar as decisions usando as strategies
+início da rodada
 
-atualizar Startup com base em Deltas
+fim da rodada
 
-registrar histórico
+decisão aplicada
 
-calcular o ranking final
+fim do jogo
 
-A ScoreService será responsável por encapsular a lógica de cálculo de score final.
+--> Exportação CSV (Opcional entregue)
+
+Gerado automaticamente:
+relatorio_startups.csv
+Guarda registro de cada evento relevante (startup, moral, caixa, reputação etc).
+
+--> Bot IA simples (Opcional entregue)
+
+A BetaTech joga automaticamente usando a classe BotDecision.java, que escolhe decisões de forma aleatória (sem repetir).
+Eu controlo a AlphaLabs e o bot controla a BetaTech.
 
 
 # Banco de Dados (H2):
@@ -173,33 +392,5 @@ A URL está em persistence/DataSourceProvider.java
 
 O resources/ schema.sql precisará conter as tabelas: startup, rodada e decisao_aplicada.
 
-# Como compilar e rodar este projeto:
-
-Na pasta startup-game-refactor: 
-Digite para compilar: javac -d out (Get-ChildItem -Recurse -Filter *.java | ForEach-Object { $_.FullName })
-
-Para Executar, digite: 
-java -cp "out;resources" Main
 
 
-# Versionamento: usando Git:
-o Repositório se encontra neste link: https://github.com/bahscosta/startup-game-refactor
-
-Atualização 21/11: README inicial criado com base nas implementações já concluídas.
-
-
-
-
-# Como fucniona a rodada:
-
-Mostrar como a startup está no começo da rodada
-
-Perguntar ao jogador quais decisões ele quer tomar
-
-Aplicar essas decisões (usando Strategy e Factory)
-
-Fechar a rodada (receber receita, atualizar moral, reputação etc.)
-
-Mostrar como a startup ficou depois
-
- Tudo isso acontece para CADA startup em CADA rodada.
