@@ -12,7 +12,7 @@ public class App {
         DatabaseInitializer.inicializar();
 
         System.out.println("======================================");
-        System.out.println("      🚀 BEM-VINDO AO STARTUP GAME 🚀 ");
+        System.out.println("      BEM-VINDO AO STARTUP GAME ");
         System.out.println("======================================");
 
         // carrega as configurações do jogo (total de rodadas, decisões por rodada)

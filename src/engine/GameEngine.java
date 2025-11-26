@@ -32,9 +32,9 @@ public class GameEngine {
         System.out.println(" ************************************************\n");
 
         System.out.println("Vamos simular o crescimento das startups ao longo de "
-                + config.totalRodadas() + " rodadas");
+                           + config.totalRodadas() + " rodadas");
         System.out.println("Máximo de decisões por rodada: "
-                + config.maxDecisoesPorRodada());
+                           + config.maxDecisoesPorRodada());
         System.out.println("--------------------------------------------\n");
 
         //cria a startup:
@@ -82,22 +82,22 @@ public class GameEngine {
         List<Startup> list = new ArrayList<>();
 
         Startup s1 = new Startup(
-                "AlphaLabs",
-                new model.vo.Dinheiro(10000),
-                new model.vo.Dinheiro(700),
-                new model.vo.Humor(60),
-                new model.vo.Humor(80)
+            "AlphaLabs",
+            new model.vo.Dinheiro(10000),
+            new model.vo.Dinheiro(700),
+            new model.vo.Humor(60),
+            new model.vo.Humor(80)
         );
         s1.addObserver(new observer.ConsoleObserver());
         s1.addObserver(new observer.CSVObserver());
         list.add(s1);
 
         Startup s2 = new Startup(
-                "BetaTech",
-                new model.vo.Dinheiro(10000),
-                new model.vo.Dinheiro(7000),
-                new model.vo.Humor(60),
-                new model.vo.Humor(80)
+            "BetaTech",
+            new model.vo.Dinheiro(10000),
+            new model.vo.Dinheiro(7000),
+            new model.vo.Humor(60),
+            new model.vo.Humor(80)
         );
         s2.addObserver(new observer.ConsoleObserver());
         s2.addObserver(new observer.CSVObserver());
@@ -136,8 +136,8 @@ public class GameEngine {
         System.out.println(startup);
     }
 
-    // serve para o processarRodadaDoJogador não dar erro. 
-    //ele chama o método fecharRodada(startup) sendo q o método ainda n existe.
+    // serve para o processarRodadaDoJogador não dar erro.
+    // ele chama o método fecharRodada(startup) sendo q o método ainda n existe.
     private void fecharRodada(Startup startup) {
         // calcula a receita da rodada (incluindo o bônus)
         double receita = startup.receitaRodada();
@@ -148,9 +148,9 @@ public class GameEngine {
 
         // calcula crescimento da receita base
         double crescimento =
-                1.0
-                        + (startup.getReputacao().valor() / 100.0) * 0.01
-                        + (startup.getMoral().valor() / 100.0) * 0.005;
+            1.0
+            + (startup.getReputacao().valor() / 100.0) * 0.01
+            + (startup.getMoral().valor() / 100.0) * 0.005;
 
         double novaBase = startup.getReceitaBase().valor() * crescimento;
         startup.setReceitaBase(new model.vo.Dinheiro(novaBase));
@@ -169,8 +169,8 @@ public class GameEngine {
         int pos = 1;
         for (Startup s : ordenada) {
             System.out.println(
-                    pos + "º lugar - " + s.getNome() +
-                            " | SCORE: " + String.format(Locale.US, "%.2f", s.scoreFinal())
+                pos + "º lugar - " + s.getNome() +
+                " | SCORE: " + String.format(Locale.US, "%.2f", s.scoreFinal())
             );
             pos++;
         }
@@ -256,7 +256,7 @@ public class GameEngine {
 
     //agora é usar o método aplicarDecisoes
     //a partir da startup e das decisões escolhidas, vai pedir pro DecisaoFactory criar a estratégia
-    //chama o strategy.aplicar(startup) pra devolver um Delta e depos o aplica na startup
+    //chama o strategy.aplicar(startup) pra devolver um Delta e depois o aplica na startup
     // Aplica as decisões escolhidas na startup usando Strategy + Factory
     private void aplicarDecisoes(Startup startup, List<String> escolhas) {
 
