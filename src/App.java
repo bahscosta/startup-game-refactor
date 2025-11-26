@@ -1,5 +1,3 @@
-//é a porta de entrada do jogo
-
 DatabaseInitializer.inicializar();
 
 
