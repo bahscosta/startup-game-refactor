@@ -103,6 +103,9 @@ public void iniciarSimulacaoStartup() {
 
     // depois, mostra o ranking final:
     mostrarRankingFinal();
+
+    // mostra o que foi salvo no banco H2
+    StartupRepository.imprimirRelatorioBanco();
 }
 
 
