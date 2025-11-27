@@ -18,12 +18,10 @@
 
     <!-- Dependências (Maven baixa o JAR do H2 pra você) -->
     <dependencies>
-        <!-- Driver do banco H2 -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>2.2.224</version>
-            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
@@ -47,7 +45,7 @@
                 <version>3.5.0</version>
                 <configuration>
                     <!-- A classe que tem o método main -->
-                    <mainClass>app.App</mainClass>
+                    <mainClass>App</mainClass>
                 </configuration>
             </plugin>
         </plugins>
