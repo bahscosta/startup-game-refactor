@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Informações do projeto -->
+    <groupId>br.com.startupgame</groupId>
+    <artifactId>startup-game-refactor</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- Java 17 e encoding -->
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- Dependências (Maven baixa o JAR do H2 pra você) -->
+    <dependencies>
+        <!-- Driver do banco H2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.2.224</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Como o seu projeto está organizado em pastas -->
+    <build>
+        <!-- seu código-fonte está em "src" -->
+        <sourceDirectory>src</sourceDirectory>
+
+        <!-- arquivos de configuração (ex: game.properties) em "resources" -->
+        <resources>
+            <resource>
+                <directory>resources</directory>
+            </resource>
+        </resources>
+
+        <!-- plugin pra rodar o jogo com "mvn exec:java" -->
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <!-- A classe que tem o método main -->
+                    <mainClass>app.App</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -13,7 +13,9 @@ public class App {
 
         System.out.println("======================================");
         System.out.println("      BEM-VINDO AO STARTUP GAME ");
-        System.out.println("======================================");
+        System.
+        
+        out.println("======================================");
 
         // carrega as configurações do jogo (total de rodadas, decisões por rodada)
         Config config = new Config();
